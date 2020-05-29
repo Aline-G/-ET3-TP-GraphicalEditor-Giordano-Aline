@@ -1,4 +1,5 @@
 package sample;
+import javafx.scene.effect.Reflection;
 import javafx.scene.effect.Shadow;
 import javafx.scene.transform.Translate;
 import javafx.beans.value.ChangeListener;
@@ -91,8 +92,10 @@ public class Controller {
                         @Override
                         public void handle(MouseEvent mouseEvent) {
                             if(modele.getSelect()){
-                                Shadow s = new Shadow();
-                                rec.setEffect(s);
+                                Reflection r = new Reflection();
+                                r.setFraction(0.7);
+                                //Shadow s = new Shadow();
+                                rec.setEffect(r);
                                 //rec.setHeight(rec.getHeight()+10);
                             }
                         }
@@ -128,10 +131,10 @@ public class Controller {
                     resizeRec(listeRec.get(listeRec.size() - 1), mouseEvent.getX() - (listeX.get(listeX.size() - 1)), mouseEvent.getY() - (listeY.get(listeY.size() - 1)));
                     listeRec.get(listeRec.size() - 1).addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
                         @Override
-                        public void handle(MouseEvent mouseEvent) {
+                        public void handle(MouseEvent me) {
                             if(modele.getSelect()){
-                                listeRec.get(listeRec.size() - 1).setTranslateX(mouseEvent.getX()-(listeX.get(listeX.size() - 1)));
-                                listeRec.get(listeRec.size() - 1).setTranslateY(mouseEvent.getY()-(listeY.get(listeY.size() - 1)));
+                                listeRec.get(listeRec.size() - 1).setTranslateX(me.getX()-(listeX.get(listeX.size() - 1)));
+                                listeRec.get(listeRec.size() - 1).setTranslateY(me.getY()-(listeY.get(listeY.size() - 1)));
                             }
                         }
                     });
@@ -141,10 +144,10 @@ public class Controller {
                     resizeElli(listeElli.get(listeElli.size() - 1), mouseEvent.getX() - (listeX.get(listeX.size() - 1)), mouseEvent.getY() - (listeY.get(listeY.size() - 1)));
                     listeElli.get(listeElli.size() - 1).addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
                         @Override
-                        public void handle(MouseEvent mouseEvent) {
+                        public void handle(MouseEvent me) {
                             if(modele.getSelect()){
-                                listeElli.get(listeElli.size() - 1).setCenterX(mouseEvent.getX()-(listeX.get(listeX.size() - 1)));
-                                listeElli.get(listeElli.size() - 1).setCenterY(mouseEvent.getY()-(listeY.get(listeY.size() - 1)));
+                                listeElli.get(listeElli.size() - 1).setCenterX(me.getX()-(listeX.get(listeX.size() - 1)));
+                                listeElli.get(listeElli.size() - 1).setCenterY(me.getY()-(listeY.get(listeY.size() - 1)));
                             }
                         }
                     });
