@@ -139,6 +139,15 @@ public class Controller {
                 }
                 if (modele.getElli()) {
                     resizeElli(listeElli.get(listeElli.size() - 1), mouseEvent.getX() - (listeX.get(listeX.size() - 1)), mouseEvent.getY() - (listeY.get(listeY.size() - 1)));
+                    listeElli.get(listeElli.size() - 1).addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            if(modele.getSelect()){
+                                listeElli.get(listeElli.size() - 1).setCenterX(mouseEvent.getX()-(listeX.get(listeX.size() - 1)));
+                                listeElli.get(listeElli.size() - 1).setCenterY(mouseEvent.getY()-(listeY.get(listeY.size() - 1)));
+                            }
+                        }
+                    });
                     dessin.getChildren().add(listeElli.get(listeElli.size() - 1));
                 }
 
