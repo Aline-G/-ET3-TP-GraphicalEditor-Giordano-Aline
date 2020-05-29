@@ -103,7 +103,7 @@ public class Controller {
                                 Reflection r = new Reflection();
                                 r.setFraction(0.7);
                                 rec.setEffect(r); //on ajoute de la reflexion au rectangle
-
+                                rec.setFill(couleurClick(mouseEvent));
                             }
                         }
                     });
@@ -132,6 +132,7 @@ public class Controller {
                                 Reflection r = new Reflection();
                                 r.setFraction(0.7);
                                 elli.setEffect(r); //on ajoute de la reflexion à l'ellipse
+                                elli.setFill(couleurClick(mouseEvent));
                             }
                         }
                     });
@@ -219,8 +220,9 @@ public class Controller {
     //fin des fonctions qui mettent à jour les radios boutons
 
     //fonction qui met à jour la couleur dans le modele
-    private void couleurClick(MouseEvent event) {
+    private Color couleurClick(MouseEvent event) {
         modele.setCouleur(colorP.getValue());
+        return colorP.getValue();
     }
     //fonction qui crée le rectangle
     private Rectangle dessinerRec(double x, double y) {
