@@ -1,5 +1,6 @@
 package sample;
-
+import javafx.scene.effect.Shadow;
+import javafx.scene.transform.Translate;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -90,8 +91,9 @@ public class Controller {
                         @Override
                         public void handle(MouseEvent mouseEvent) {
                             if(modele.getSelect()){
-                                rec.setWidth(rec.getWidth()+10);
-                                rec.setHeight(rec.getHeight()+10);
+                                Shadow s = new Shadow();
+                                rec.setEffect(s);
+                                //rec.setHeight(rec.getHeight()+10);
                             }
                         }
                     });
@@ -124,6 +126,15 @@ public class Controller {
             public void handle(MouseEvent mouseEvent) {
                 if (modele.getRec()) {
                     resizeRec(listeRec.get(listeRec.size() - 1), mouseEvent.getX() - (listeX.get(listeX.size() - 1)), mouseEvent.getY() - (listeY.get(listeY.size() - 1)));
+                    listeRec.get(listeRec.size() - 1).addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            if(modele.getSelect()){
+                                listeRec.get(listeRec.size() - 1).setTranslateX(mouseEvent.getX()-(listeX.get(listeX.size() - 1)));
+                                listeRec.get(listeRec.size() - 1).setTranslateY(mouseEvent.getY()-(listeY.get(listeY.size() - 1)));
+                            }
+                        }
+                    });
                     dessin.getChildren().add(listeRec.get(listeRec.size() - 1));
                 }
                 if (modele.getElli()) {
