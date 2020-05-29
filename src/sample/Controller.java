@@ -1,12 +1,7 @@
 package sample;
 import javafx.scene.effect.Reflection;
-import javafx.scene.effect.Shadow;
-import javafx.scene.transform.Translate;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -17,8 +12,6 @@ import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.io.File;
 import java.util.ArrayList;
 
 public class Controller {
@@ -38,10 +31,6 @@ public class Controller {
     private ToggleGroup forme;
     @FXML
     private Pane dessin;
-    @FXML
-    private Button delete;
-    @FXML
-    private Button cloneB;
 
 
 
@@ -111,9 +100,21 @@ public class Controller {
                         @Override
                         public void handle(MouseEvent mouseEvent) {
                             if(modele.getSelect()){
-                                    Reflection r = new Reflection();
-                                    r.setFraction(0.7);
-                                    rec.setEffect(r); //on ajoute de la reflexion au rectangle
+                                Reflection r = new Reflection();
+                                r.setFraction(0.7);
+                                rec.setEffect(r); //on ajoute de la reflexion au rectangle
+
+                            }
+                        }
+                    });
+                    //Tant que je maintiens le click de la souris alors le feedback reste sinon il n'est pas selectionné
+                    rec.addEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            if(modele.getSelect()){
+                                Reflection r = new Reflection();
+                                r.setFraction(0);
+                                rec.setEffect(r); //on ajoute de la reflexion égale à 0 au rectangle
                             }
                         }
                     });
@@ -131,6 +132,17 @@ public class Controller {
                                 Reflection r = new Reflection();
                                 r.setFraction(0.7);
                                 elli.setEffect(r); //on ajoute de la reflexion à l'ellipse
+                            }
+                        }
+                    });
+                    //Tant que je maintiens le click de la souris alors le feedback reste sinon il n'est pas selectionné
+                    elli.addEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            if(modele.getSelect()){
+                                Reflection r = new Reflection();
+                                r.setFraction(0);
+                                elli.setEffect(r); //on ajoute de la reflexion égale à 0 à l'ellipse
                             }
                         }
                     });
