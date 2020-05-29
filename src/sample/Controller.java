@@ -15,7 +15,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.ArrayList;
 
 public class Controller {
@@ -35,37 +38,49 @@ public class Controller {
     private ToggleGroup forme;
     @FXML
     private Pane dessin;
+    @FXML
+    private Button delete;
+    @FXML
+    private Button cloneB;
 
 
 
     @FXML
     public void initialize() {
-
+        //on initialize le modele
         this.modele = new Modele(this);
+        //on crée une liste pour récupérer l'ensemble des rectangles et des ellipses
         ArrayList<Rectangle> listeRec = new ArrayList();
         ArrayList<Ellipse> listeElli = new ArrayList();
         //liste qui prennent en mémoire les positions X et Y de la souris
         ArrayList<Double> listeX = new ArrayList<Double>();
         ArrayList<Double> listeY = new ArrayList<Double>();
 
+        //Permet d'ajouter d'appeler la fonction qui met à jour l'état des boutons quand on clique sur le bouton ellipse
         ellipseRB.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 ellipseClick(mouseEvent);
             }
         });
+
+        //Permet d'ajouter d'appeler la fonction qui met à jour l'état des boutons quand on clique sur le bouton rectangle
         rectangleRB.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 rectangleClick(mouseEvent);
             }
         });
+
+        //Permet d'ajouter d'appeler la fonction qui met à jour l'état des boutons quand on clique sur le bouton line
         lineRB.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 lineClick(mouseEvent);
             }
         });
+
+        //Permet d'ajouter d'appeler la fonction qui met à jour l'état des boutons quand on clique sur le bouton Select/move
         selectRB.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -73,6 +88,7 @@ public class Controller {
             }
         });
 
+        //Permet d'ajouter d'appeler la fonction qui met à jour la valeur de la couleur dans le modele quand on clique sur le colorPicker
         colorP.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -80,56 +96,58 @@ public class Controller {
             }
         });
 
+
+        //Ajoute un événement quand on clique avec la souris dans le pane
         dessin.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 Double x = mouseEvent.getX();
                 Double y = mouseEvent.getY();
+                //on vérifie quel bouton est enclenché
                 if (modele.getRec()) {
-                    Rectangle rec = dessinerRec(x, y);
-
+                    Rectangle rec = dessinerRec(x, y); //création du rectangle
+                    //permet de faire apparaitre un feedback quand un rectangle est sélectionné
                     rec.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle(MouseEvent mouseEvent) {
+                            if(modele.getSelect()){
+                                    Reflection r = new Reflection();
+                                    r.setFraction(0.7);
+                                    rec.setEffect(r); //on ajoute de la reflexion au rectangle
+                            }
+                        }
+                    });
+                    listeRec.add(rec); //on ajoute le rectangle ainsi créé à la liste de rectangle
+                    listeX.add(x); //ces valeurs vont nous permettre de dessiner de manière plus précise les rectangles
+                    listeY.add(y);
+                }
+                if (modele.getElli()) {
+                    Ellipse elli = dessinerElli(x, y); //création de l'ellipse
+                    //permet de faire apparaitre un feedback quand un rectangle est sélectionné
+                    elli.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
                         @Override
                         public void handle(MouseEvent mouseEvent) {
                             if(modele.getSelect()){
                                 Reflection r = new Reflection();
                                 r.setFraction(0.7);
-                                //Shadow s = new Shadow();
-                                rec.setEffect(r);
-                                //rec.setHeight(rec.getHeight()+10);
+                                elli.setEffect(r); //on ajoute de la reflexion à l'ellipse
                             }
                         }
                     });
-                    listeRec.add(rec);
-                    listeX.add(x);
-                    listeY.add(y);
-                }
-                if (modele.getElli()) {
-                    Ellipse elli = dessinerElli(x, y);
-                    elli.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent mouseEvent) {
-                            if(modele.getSelect()){
-                                elli.setRadiusX(elli.getRadiusX()+10);
-                                elli.setRadiusY(elli.getRadiusY()+10);
-
-                            }
-                        }
-                    });
-                    listeElli.add(elli);
+                    listeElli.add(elli); //on ajoute l'ellipse ainsi créée à la liste d'ellipses
                     listeX.add(x);
                     listeY.add(y);
                 }
             }
         });
 
-
+        //Ajoute un événement quand on reste appuyer avec la souris et qu'on la bouge
         dessin.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (modele.getRec()) {
+                if (modele.getRec()) { //on vérifie quel bouton est enclenché ensuite on utilise la fonction qui met à la bonne taille en fonction des paramètres rentrés
                     resizeRec(listeRec.get(listeRec.size() - 1), mouseEvent.getX() - (listeX.get(listeX.size() - 1)), mouseEvent.getY() - (listeY.get(listeY.size() - 1)));
-                    listeRec.get(listeRec.size() - 1).addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
+                    listeRec.get(listeRec.size() - 1).addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() { //on crée un nouvel événement pour faire bouger le rectangle ainsi créé
                         @Override
                         public void handle(MouseEvent me) {
                             if(modele.getSelect()){
@@ -138,7 +156,7 @@ public class Controller {
                             }
                         }
                     });
-                    dessin.getChildren().add(listeRec.get(listeRec.size() - 1));
+                    dessin.getChildren().add(listeRec.get(listeRec.size() - 1)); // on ajoute notre forme au pane
                 }
                 if (modele.getElli()) {
                     resizeElli(listeElli.get(listeElli.size() - 1), mouseEvent.getX() - (listeX.get(listeX.size() - 1)), mouseEvent.getY() - (listeY.get(listeY.size() - 1)));
@@ -156,12 +174,9 @@ public class Controller {
 
             }
         });
-
-
-
     }
 
-
+    //fonctions qui mettent à jour les états des radios boutons
     private void ellipseClick(MouseEvent event) {
         modele.setElli(true);
         modele.setRec(false);
@@ -189,23 +204,26 @@ public class Controller {
         modele.setLine(false);
         modele.setSelect(true);
     }
+    //fin des fonctions qui mettent à jour les radios boutons
 
+    //fonction qui met à jour la couleur dans le modele
     private void couleurClick(MouseEvent event) {
         modele.setCouleur(colorP.getValue());
     }
-
+    //fonction qui crée le rectangle
     private Rectangle dessinerRec(double x, double y) {
         Rectangle rec = new Rectangle(x, y, 2, 2);
         rec.setStroke(Color.BLACK);
         rec.setFill(colorP.getValue());
         return rec;
     }
-
+    //fonction qui modifie la taille du rectangle
     private void resizeRec(Rectangle rec, double x, double y) {
         rec.setHeight(x);
         rec.setWidth(y);
     }
 
+    //fonction qui crée l'ellipse
     private Ellipse dessinerElli(double x, double y) {
         Ellipse elli = new Ellipse(x, y, 75, 40);
         elli.setStroke(Color.BLACK);
@@ -213,6 +231,7 @@ public class Controller {
         return elli;
     }
 
+    //fonction qui modifie la taille de l'ellipse
     private void resizeElli(Ellipse elli, double x, double y) {
         elli.setRadiusX(x);
         elli.setRadiusY(y);
