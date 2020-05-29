@@ -40,6 +40,9 @@ public class Controller {
         this.modele = new Modele(this);
         ArrayList<Rectangle> listeRec = new ArrayList();
         ArrayList<Ellipse> listeElli = new ArrayList();
+        //liste qui prennent en mémoire les positions X et Y de la souris
+        ArrayList<Double> listeX = new ArrayList<Double>();
+        ArrayList<Double> listeY = new ArrayList<Double>();
 
         ellipseRB.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
@@ -74,15 +77,19 @@ public class Controller {
         dessin.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                Double x = mouseEvent.getX();
+                Double y = mouseEvent.getY();
                 if (modele.getRec()) {
-                    Rectangle rec = dessinerRec(mouseEvent.getX(), mouseEvent.getY(), modele.getCouleur());
+                    Rectangle rec = dessinerRec(x, y);
                     listeRec.add(rec);
-                    dessin.getChildren().add(rec);
+                    listeX.add(x);
+                    listeY.add(y);
                 }
                 if (modele.getElli()) {
-                    Ellipse elli = dessinerElli(mouseEvent.getX(), mouseEvent.getY(), modele.getCouleur());
+                    Ellipse elli = dessinerElli(x, y, modele.getCouleur());
                     listeElli.add(elli);
-                    dessin.getChildren().add(elli);
+                    listeX.add(x);
+                    listeY.add(y);
                 }
             }
         });
@@ -92,28 +99,16 @@ public class Controller {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (modele.getRec()) {
-                    resizeRec(listeRec.get(listeRec.size()-1),mouseEvent.getX(), mouseEvent.getY());
+                    resizeRec(listeRec.get(listeRec.size()-1),mouseEvent.getX()-(listeX.get(listeX.size()-1)), mouseEvent.getY()-(listeY.get(listeY.size()-1)));
                     dessin.getChildren().add(listeRec.get(listeRec.size()-1));
                 }
                 if (modele.getElli()) {
-                    resizeElli(listeElli.get(listeElli.size()-1),mouseEvent.getX(), mouseEvent.getY());
+                    resizeElli(listeElli.get(listeElli.size()-1),mouseEvent.getX()-(listeX.get(listeX.size()-1)), mouseEvent.getY()-(listeY.get(listeY.size()-1)));
                     dessin.getChildren().add(listeElli.get(listeElli.size()-1));
                 }
 
             }
         });
-/*
-        canvas.setOnDragDetected(new EventHandler() {
-            @Override
-            public void handle(MouseEvent event) {
-                Dragboard db = canvas.startDragAndDrop(TransferMode.ANY);
-                ClipboardContent content = new ClipboardContent();
-                content.putString("Hello!");
-                db.setContent(content);
-                event.consume();
-            }
-        });
-*/
     }
 
 
@@ -145,10 +140,10 @@ public class Controller {
         modele.setCouleur(colorP.getValue());
     }
 
-    private Rectangle dessinerRec(double x, double y, Color couleur){
+    private Rectangle dessinerRec(double x, double y){
         Rectangle rec = new Rectangle (x,y,2,2);
         rec.setStroke (Color.BLACK);
-        rec.setFill(couleur);
+        rec.setFill(modele.getCouleur());
         return rec;
     }
     private void resizeRec(Rectangle rec,double x, double y){
@@ -156,10 +151,10 @@ public class Controller {
         rec.setWidth(y);
     }
 
-    private Ellipse dessinerElli(double x, double y, Color couleur) {
+    private Ellipse dessinerElli(double x, double y) {
         Ellipse elli = new Ellipse (x, y, 75, 40);
         elli.setStroke (Color.BLACK);
-        elli.setFill(couleur);
+        elli.setFill(colorP.getValue());
         return elli;
     }
     private void resizeElli(Ellipse elli, double x, double y) {
