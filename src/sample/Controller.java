@@ -164,7 +164,7 @@ public class Controller {
     }
     private void resizeElli(Ellipse elli, double x, double y) {
         elli.setRadiusX(x);
-        elli.setRadiusX(y);
+        elli.setRadiusY(y);
     }
 
 
