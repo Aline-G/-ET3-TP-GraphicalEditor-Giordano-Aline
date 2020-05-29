@@ -86,7 +86,7 @@ public class Controller {
                     listeY.add(y);
                 }
                 if (modele.getElli()) {
-                    Ellipse elli = dessinerElli(x, y, modele.getCouleur());
+                    Ellipse elli = dessinerElli(x, y);
                     listeElli.add(elli);
                     listeX.add(x);
                     listeY.add(y);
