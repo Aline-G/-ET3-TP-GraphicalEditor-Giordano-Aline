@@ -3,6 +3,9 @@ import javafx.scene.paint.Color;
 
 
 public class Modele {
+
+    //Cette classe permet de stocker les états des différents composants de notre interface
+
     private Controller controlleur;
     public Color couleur;
     private boolean rec = false;
