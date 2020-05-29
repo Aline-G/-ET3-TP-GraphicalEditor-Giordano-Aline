@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<HBox fx:id="Hbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="Hbox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <VBox fx:id="Vbox" prefHeight="400.0" prefWidth="170.0">
          <children>
@@ -32,25 +32,24 @@
                </padding>
             </RadioButton>
             <Separator fx:id="separator1" prefWidth="200.0" />
-            <VBox fx:id="VboxRB" prefHeight="70.0" prefWidth="170.0">
-               <children>
-                  <RadioButton fx:id="ellipseRB" mnemonicParsing="false" text="Ellipse">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" top="10.0" />
-                     </padding>
-                  </RadioButton>
-                  <RadioButton fx:id="rectangleRB" mnemonicParsing="false" text="Rectangle">
-                     <padding>
-                        <Insets bottom="5.0" left="10.0" top="5.0" />
-                     </padding>
-                  </RadioButton>
-                  <RadioButton fx:id="lineRB" mnemonicParsing="false" text="Line">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" top="10.0" />
-                     </padding>
-                  </RadioButton>
-               </children>
-            </VBox>
+            <RadioButton fx:id="ellipseRB" mnemonicParsing="false" selected="true" text="Ellipse">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" top="10.0" />
+               </padding>
+               <toggleGroup>
+                  <ToggleGroup fx:id="forme" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="rectangleRB" mnemonicParsing="false" text="Rectangle" toggleGroup="$forme">
+               <padding>
+                  <Insets bottom="5.0" left="10.0" top="5.0" />
+               </padding>
+            </RadioButton>
+            <RadioButton fx:id="lineRB" mnemonicParsing="false" text="Line" toggleGroup="$forme">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" top="10.0" />
+               </padding>
+            </RadioButton>
             <Separator fx:id="separator2" prefWidth="200.0">
                <padding>
                   <Insets bottom="5.0" top="5.0" />
@@ -83,6 +82,6 @@
          </children>
       </VBox>
       <Separator fx:id="separator4" orientation="VERTICAL" prefHeight="200.0" />
-      <Canvas fx:id="canvas" height="401.0" width="423.0" />
+      <Pane fx:id="dessin" prefHeight="400.0" prefWidth="429.0" />
    </children>
 </HBox>
