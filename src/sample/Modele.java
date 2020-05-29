@@ -8,11 +8,13 @@ public class Modele {
     private boolean rec = false;
     private boolean elli = false;
     private boolean line = false;
-    private boolean selec = false;
+    private boolean selec = true;
 
     public Modele(Controller controller){
         this.controlleur = controller;
     }
+
+    //On crée les getters et les setters pour chaque attribut
 
     public boolean getRec(){
         return rec;
@@ -43,14 +45,6 @@ public class Modele {
     }
     public void setCouleur(Color couleur){
         this.couleur = couleur;
-        System.out.println(this.couleur);
     }
-    public void selectionner(){
-        rec = false;
-        elli = false;
-        line = false;
-        System.out.println("ça marche");
-    }
-
 
 }

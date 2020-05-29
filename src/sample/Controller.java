@@ -1,5 +1,5 @@
 package sample;
-import javafx.event.ActionEvent;
+
 import javafx.scene.control.Button;
 import javafx.scene.effect.Reflection;
 import javafx.event.EventHandler;
@@ -13,7 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class Controller {
@@ -140,7 +139,7 @@ public class Controller {
                                 r.setFraction(0.7);
                                 elli.setEffect(r); //on ajoute de la reflexion à l'ellipse
                                 elli.setFill(couleurClick(mouseEvent));
-                                deleteBtn.setOnAction(event -> { //supression du dernier rectangle créé
+                                deleteBtn.setOnAction(event -> { //supression de la dernière ellipse créée
                                     dessin.getChildren().remove(listeElli.get(listeElli.size() - 1));
                                 });
                             }
@@ -169,7 +168,7 @@ public class Controller {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (modele.getRec()) { //on vérifie quel bouton est enclenché ensuite on utilise la fonction qui met à la bonne taille en fonction des paramètres rentrés
-                    resizeRec(listeRec.get(listeRec.size() - 1), mouseEvent.getY() - (listeY.get(listeY.size() - 1)), mouseEvent.getX() - (listeX.get(listeX.size() - 1)));
+                    resizeRec(listeRec.get(listeRec.size() - 1), mouseEvent.getX() - (listeX.get(listeX.size() - 1)), mouseEvent.getY() - (listeY.get(listeY.size() - 1)));
                     listeRec.get(listeRec.size() - 1).addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() { //on crée un nouvel événement pour faire bouger le rectangle ainsi créé
                         @Override
                         public void handle(MouseEvent me) {
@@ -194,18 +193,8 @@ public class Controller {
                     });
                     dessin.getChildren().add(listeElli.get(listeElli.size() - 1));
                 }
-
             }
         });
-        /*
-        //permet de supprimer les derniers objets créés
-        deleteBtn.addEventHandler(MouseEvent.MOUSE_CLICKED,new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                dessin.getChildren().remove(listeRec.get(listeRec.size() - 1));
-                dessin.getChildren().remove(listeElli.get(listeElli.size() - 1));
-            }
-        });*/
     }
 
     //fonctions qui mettent à jour les états des radios boutons
@@ -252,8 +241,8 @@ public class Controller {
     }
     //fonction qui modifie la taille du rectangle
     private void resizeRec(Rectangle rec, double x, double y) {
-        rec.setHeight(x);
-        rec.setWidth(y);
+        rec.setHeight(y);
+        rec.setWidth(x);
     }
 
     //fonction qui crée l'ellipse
