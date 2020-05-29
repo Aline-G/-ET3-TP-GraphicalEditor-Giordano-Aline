@@ -42,7 +42,7 @@ public class Modele {
         return couleur;
     }
     public void setCouleur(Color couleur){
-        this.couleur= couleur;
+        this.couleur = couleur;
         System.out.println(this.couleur);
     }
     public void selectionner(){

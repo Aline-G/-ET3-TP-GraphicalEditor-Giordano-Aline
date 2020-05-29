@@ -59,16 +59,27 @@ public class Controller {
                 System.out.println(modele.getLine());
             }
         });
-/*
+
+        colorP.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                couleurClick(mouseEvent);
+                //modele.couleur =  mouseEvent.getValue();
+                System.out.println(modele.getCouleur());
+            }
+        });
+
         dessin.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent t) {
                         if (modele.getRec()) {
-                            dessinerRec(t.getX(),t.getY());
+
                         }
                         System.out.println("dessin mouse pressed");
                     }
-                });*/
+                });
+
+
         dessin.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -78,7 +89,7 @@ public class Controller {
                     dessin.getChildren().add(rec);
                 }
                 if (modele.getElli()){
-                    Ellipse elli = dessinerElli();
+                    Ellipse elli = dessinerElli(mouseEvent.getX(),mouseEvent.getY(), modele.getCouleur());
                     dessin.getChildren().add(elli);
                 }
 
@@ -136,8 +147,8 @@ public class Controller {
         modele.setSelect(true);
     }
     private void couleurClick(MouseEvent event){
-        //modele.couleur;
-      //  modele.setCouleur();
+        //ColorPicker cp = new ColorPicker();
+        modele.couleur =  colorP.getValue();
     }
 
     private Rectangle dessinerRec(double x, double y, Color couleur){
@@ -147,10 +158,12 @@ public class Controller {
         return rec;
     }
 
-    private Ellipse dessinerElli() {
-        Ellipse elli = new Ellipse (300, 300, 75, 40);
+    private Ellipse dessinerElli(double x, double y, Color couleur) {
+        Ellipse elli = new Ellipse (x, y, 75, 40);
         elli.setStroke (Color.BLACK);
-        elli.setFill(null);
+        elli.setFill(couleur);
         return elli;
     }
+
+
 }
