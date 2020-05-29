@@ -1,4 +1,6 @@
 package sample;
+import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
 import javafx.scene.effect.Reflection;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,7 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
 
-import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 
 public class Controller {
@@ -31,6 +33,8 @@ public class Controller {
     private ToggleGroup forme;
     @FXML
     private Pane dessin;
+    @FXML
+    private Button deleteBtn;
 
 
 
@@ -104,6 +108,9 @@ public class Controller {
                                 r.setFraction(0.7);
                                 rec.setEffect(r); //on ajoute de la reflexion au rectangle
                                 rec.setFill(couleurClick(mouseEvent));
+                                deleteBtn.setOnAction(event -> { //supression du dernier rectangle créé
+                                    dessin.getChildren().remove(listeRec.get(listeRec.size() - 1));
+                                });
                             }
                         }
                     });
@@ -133,6 +140,9 @@ public class Controller {
                                 r.setFraction(0.7);
                                 elli.setEffect(r); //on ajoute de la reflexion à l'ellipse
                                 elli.setFill(couleurClick(mouseEvent));
+                                deleteBtn.setOnAction(event -> { //supression du dernier rectangle créé
+                                    dessin.getChildren().remove(listeElli.get(listeElli.size() - 1));
+                                });
                             }
                         }
                     });
@@ -159,7 +169,7 @@ public class Controller {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (modele.getRec()) { //on vérifie quel bouton est enclenché ensuite on utilise la fonction qui met à la bonne taille en fonction des paramètres rentrés
-                    resizeRec(listeRec.get(listeRec.size() - 1), mouseEvent.getX() - (listeX.get(listeX.size() - 1)), mouseEvent.getY() - (listeY.get(listeY.size() - 1)));
+                    resizeRec(listeRec.get(listeRec.size() - 1), mouseEvent.getY() - (listeY.get(listeY.size() - 1)), mouseEvent.getX() - (listeX.get(listeX.size() - 1)));
                     listeRec.get(listeRec.size() - 1).addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>() { //on crée un nouvel événement pour faire bouger le rectangle ainsi créé
                         @Override
                         public void handle(MouseEvent me) {
@@ -187,6 +197,15 @@ public class Controller {
 
             }
         });
+        /*
+        //permet de supprimer les derniers objets créés
+        deleteBtn.addEventHandler(MouseEvent.MOUSE_CLICKED,new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                dessin.getChildren().remove(listeRec.get(listeRec.size() - 1));
+                dessin.getChildren().remove(listeElli.get(listeElli.size() - 1));
+            }
+        });*/
     }
 
     //fonctions qui mettent à jour les états des radios boutons
